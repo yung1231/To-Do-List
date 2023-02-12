@@ -16,6 +16,30 @@ public:
     tasks.push_back(make_pair(name, description));
   }
 
+
+  void removeTask(string taskNum) {
+    int num = stoi(taskNum);
+    if (num < 1 || num > tasks.size()) {
+      cout << "Task not found." << endl;
+      return;
+    }
+
+    tasks.erase(tasks.begin() + num - 1);
+    cout << "Task removed." << endl;
+  }
+
+  void editTask(string taskNum, string name, string description) {
+    int num = stoi(taskNum);
+    if (num < 1 || num > tasks.size()) {
+      cout << "Task not found." << endl;
+      return;
+    }
+
+    tasks[num - 1].first = name;
+    tasks[num - 1].second = description;
+    cout << "Task edited." << endl;
+  }
+
   void viewTasks() {
     cout << endl;
     if (tasks.empty()) {
@@ -32,21 +56,6 @@ public:
       }
     }
     cout << endl;
-  }
-
-  void removeTask(int taskNum) {
-    if (tasks.empty()) {
-      cout << "There is no task to remove." << endl;
-      return;
-    }
-
-    if (taskNum < 1 || taskNum > tasks.size()) {
-      cout << "Task not found." << endl;
-      return;
-    }
-
-    tasks.erase(tasks.begin() + taskNum - 1);
-    cout << "Task removed." << endl;
   }
 
   void saveList() {
@@ -67,7 +76,21 @@ public:
     }
     file.close();
   }
+
+  bool isEmpty() const {
+      return tasks.empty();
+  }
 };
+
+bool isNumber(string str) {
+  for (char c : str) {
+    if (!isdigit(c)) {
+      cout << "Please enter the number" <<endl;
+      return false;
+    }
+  }
+  return true;
+}
 
 int main() {
   cout << "Enter your name: ";
@@ -76,9 +99,10 @@ int main() {
   ToDoList list(userName);
   list.readList();
 
-  int choice;
-  int taskNum;
+  string choice;
+  string taskNum;
   string name, description;
+  bool isNum;
 
   cout << R"(
 Welcome to your To-Do List
@@ -93,13 +117,19 @@ Welcome to your To-Do List
     cout << "1. Add Task" << endl;
     cout << "2. View Tasks" << endl;
     cout << "3. Remove Task" << endl;
-    // cout << "4. Save List" << endl;
-    cout << "4. Quit" << endl;
-    cout << endl;
-    cout << "Enter your choice: ";
-    cin >> choice;
+    cout << "4. Edit Task" << endl;
+    cout << "5. Quit" << endl;
+    isNum = false;
+    while(!isNum){
+      cout << endl;
+      cout << "Enter your choice: ";
+      cin >> choice;
+      isNum = isNumber(choice);
+    }
+    int choiceNum = stoi(choice);
+    
 
-    switch (choice) {
+    switch (choiceNum) {
       case 1:
         cout << endl;
         cout << "Enter task name: ";
@@ -114,16 +144,41 @@ Welcome to your To-Do List
         list.viewTasks();
         break;
       case 3:
-        cout << endl;
-        cout << "Enter task number to remove: ";
-        cin >> taskNum;
-        list.removeTask(taskNum);
-        list.saveList();
+        isNum = false;
+        if (!list.isEmpty()) {
+          while(!isNum){
+            cout << endl;
+            cout << "Enter task number to remove: ";
+            cin >> taskNum;
+            isNum = isNumber(taskNum);
+          }
+          list.removeTask(taskNum);
+          list.saveList();
+        } else {
+          cout << "The task is empty." << endl;
+        }
         break;
-      // case 4:
-      //   list.saveList();
-      //   break;
       case 4:
+        isNum = false;
+        if (!list.isEmpty()) {
+          while(!isNum){
+            cout << endl;
+            cout << "Enter task number to edit: ";
+            cin >> taskNum;
+            isNum = isNumber(taskNum);
+          }
+          cout << "Enter task name: ";
+          cin.ignore();
+          getline(cin, name);
+          cout << "Enter task description: ";
+          getline(cin, description);
+          list.editTask(taskNum, name, description);
+          list.saveList();
+        } else {
+          cout << "The task is empty." << endl;
+        }
+        break;
+      case 5:
         return 0;
         break;
       default:
