@@ -19,18 +19,23 @@ public:
 
   void removeTask(string taskNum) {
     int num = stoi(taskNum);
-    if (num < 1 || num > tasks.size()) {
+    if (num < 1 || num > static_cast<int>(tasks.size())) {
       cout << "Task not found." << endl;
       return;
+    }else{
+      cout << "Are you sure you want to remove task " << num << "? (y/n) ";
+      char confirmation;
+      cin >> confirmation;
+      if (confirmation == 'y') {
+        tasks.erase(tasks.begin() + num - 1);
+        cout << "Task " << num << " has been removed." << endl;
+      }
     }
-
-    tasks.erase(tasks.begin() + num - 1);
-    cout << "Task removed." << endl;
   }
 
   void editTask(string taskNum, string name, string description) {
     int num = stoi(taskNum);
-    if (num < 1 || num > tasks.size()) {
+    if (num < 1 || num > static_cast<int>(tasks.size())) {
       cout << "Task not found." << endl;
       return;
     }
@@ -41,7 +46,6 @@ public:
   }
 
   void viewTasks() {
-    cout << endl;
     if (tasks.empty()) {
       cout << "You are great, there is no task." << endl;
     } else {
@@ -67,6 +71,11 @@ public:
 
   void readList() {
     ifstream file(userName + "_todolist");
+    if (!file.is_open()) {
+      cout << "File does not exist, a new temp file has been created: " << userName+"_todolist" << endl;
+      return;
+    }
+
     string line;
     while (getline(file, line)) {
       int pos = line.find(" - ");
@@ -105,7 +114,7 @@ int main() {
   bool isNum;
 
   cout << R"(
-Welcome to your To-Do List
+Welcome to ")" << userName+"_todolist" << R"(" To-Do List
        _________
       /  To-Do  \
       |   List  |
