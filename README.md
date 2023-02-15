@@ -1,32 +1,36 @@
 # To-Do List Application in C++
-This is a simple to-do list application written in C++. The program allows the user to add tasks, view the list of tasks, and remove tasks. The task list is stored in a vector, which allows for easy management and manipulation of tasks.
+This is a simple to-do list application written in C++. The program allows the user to add, edit, view, and remove tasks from a list, as well as save the list to a file. The tasks are saved in a text file with the user's name as the file name.
 
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 ### Prerequisites
-- C++ compiler (such as g++ or clang++)
+To run this program, you need to have the `g++` compiler and `make` installed in your system.
+- gcc version 7.5.0
+- Make 4.1
 
-### Installing
-- Clone or download the repository
-- Compile the code using a C++ compiler (e.g. g++ main.cpp -o main)
-- Run the executable file (e.g. ./main)
-
-## Using the Application
-Upon running the application, you will be presented with a menu of options:
-
-```
-Welcome to your To-Do List
-1. Add a task
-2. View tasks
-3. Remove a task
-4. Quit
+### Compilation and Running
+```bash
+g++ main.cpp -o main
+./main
 ```
 
-1. To add a task, select option 1 and enter the task name and description
-2. To view the current list of tasks, select option 2
-3. To remove a task, select option 3 and enter the task name
-4. To quit the application, select option 4
+or
+
+```bash
+make
+./main
+```
+
+## Features
+1. Add task：Add a task to the To-Do list.
+2. View tasks：View all tasks in the To-Do list.
+3. Remove task：Remove a task from the To-Do list.
+4. Edit task：Edit an existing task in the To-Do list.
+5. Quit：Quit the application and save the To-Do list to a file.
+
+## Limitations
+The program is a simple To-Do list application with limited functionality. It is not designed to handle multiple users or complex task management. The file persistence feature only saves the list to a file on the same machine, and does not provide any synchronization between different machines or platforms.
 
 ## License
 This project is licensed under the Apache 2.0 License
